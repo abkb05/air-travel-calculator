@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Air Dubai Umrah Calculator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+*{font-family:'Inter',sans-serif;box-sizing:border-box}
+.step-card{display:none}
+.step-card.active{display:block!important;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.glass{background:rgba(255,255,255,.7);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.glass-dark{background:rgba(255,255,255,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
+.sidebar-item{transition:all .2s;cursor:pointer;border-radius:10px;display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;font-weight:500}
+.sidebar-item:hover{background:rgba(99,102,241,.08)}
+.sidebar-item.active{background:rgba(99,102,241,.12);color:#4f46e5;font-weight:600}
+.sidebar-item .snum{width:24px;height:24px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:#e5e7eb;color:#6b7280}
+.sidebar-item.active .snum{background:#4f46e5;color:#fff}
+.sidebar-item.done .snum{background:#059669;color:#fff}
+.sidebar-item.done{color:#059669}
+@media(max-width:768px){.sidebar-desktop{display:none}}
+@media print{.no-print{display:none!important}.step-card{display:block!important;break-inside:avoid}}
+input,select{transition:border-color .15s}
+input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+</style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-indigo-50/30 to-blue-50/30 min-h-screen">
+
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="absolute -top-40 -right-40 w-96 h-96 bg-indigo-200/25 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-200/15 rounded-full blur-3xl"></div>
+</div>
+
+<div class="relative max-w-7xl mx-auto px-3 sm:px-6 py-3 sm:py-6">
+<div class="flex gap-4 sm:gap-6">
+
+<!-- SIDEBAR -->
+<div class="sidebar-desktop w-56 lg:w-64 flex-shrink-0">
+<div class="sticky top-6 glass rounded-2xl p-4 border border-white/50 shadow-lg shadow-indigo-500/5">
+<div class="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
+<div class="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 bg-white border border-gray-200 flex items-center justify-center"><img src="air dubai logo.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" class="w-full h-full object-contain" alt="Air Dubai"><div class="w-full h-full bg-gradient-to-br from-indigo-600 to-indigo-800 flex items-center justify-center text-white shadow-md" style="display:none"><i class="fa-solid fa-calculator"></i></div></div>
+<div>
+<div class="text-sm font-bold text-gray-800 leading-tight">Air Dubai</div>
+<div class="text-[10px] text-gray-400">KQ Software Solutions</div>
+</div>
+</div>
+<div id="sidebarMenu"></div>
+</div>
+</div>
+
+<!-- MAIN -->
+<div class="flex-1 min-w-0">
+
+<!-- Header -->
+<div class="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 mb-4 border border-white/50 shadow-lg shadow-indigo-500/5 relative overflow-hidden">
+<div class="flex items-center gap-3 sm:gap-4">
+<div class="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl overflow-hidden flex-shrink-0 bg-white border border-gray-200 flex items-center justify-center shadow-lg"><img src="air dubai logo.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" class="w-full h-full object-contain" alt="Air Dubai"><div class="w-full h-full bg-gradient-to-br from-indigo-600 to-indigo-900 flex items-center justify-center text-white" style="display:none"><i class="fa-solid fa-calculator text-xl sm:text-2xl"></i></div></div>
+<div class="flex-1 min-w-0">
+<h1 class="text-lg sm:text-2xl font-extrabold text-gray-900">Umrah Package Calculator</h1>
+<p class="text-gray-500 text-xs sm:text-sm">Professional Quotation Generator by KQ Software Solutions</p>
+</div>
+<div class="hidden sm:flex items-center gap-2 bg-indigo-50/80 px-3 py-2 rounded-xl border border-indigo-100">
+<div class="w-7 h-7 rounded-lg overflow-hidden flex-shrink-0 bg-white border border-gray-200 flex items-center justify-center"><img src="kq software solutions.jpeg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" class="w-full h-full object-cover" alt="KQ"><div class="w-full h-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-white text-[10px] font-bold" style="display:none">KQ</div></div>
+<div class="text-[10px] font-semibold text-gray-700">KQ Software</div>
+</div>
+</div>
+</div>
+
+<!-- Mobile Steps -->
+<div class="sm:hidden glass rounded-2xl p-2 mb-3 border border-white/50 overflow-x-auto">
+<div class="flex gap-1 text-xs font-medium" id="mobileSteps"></div>
+</div>
+
+<form id="cf" onsubmit="return false">
+
+<!-- STEP 1: Package -->
+<div class="step-card active" data-step="1">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">1</div>
+<h2 class="text-xl font-bold text-gray-900">Package Information</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="md:col-span-2"><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Package Title</label><input type="text" id="pkgTitle" placeholder="e.g., 15 Days Premium Umrah Package" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:border-indigo-400 outline-none"></div>
+<div><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Customer Name</label><input type="text" id="custName" placeholder="Full name" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm"></div>
+<div><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Phone</label><input type="text" id="custPhone" placeholder="03XX-XXXXXXX" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm"></div>
+<div class="md:col-span-2"><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Exchange Rate (1 SAR to PKR)</label><input type="number" id="exRate" value="75" step="0.5" min="1" oninput="calcAll()" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:border-indigo-400 outline-none"></div>
+</div>
+<div class="mt-6 flex justify-end"><button type="button" onclick="goStep(2)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
+</div>
+</div>
+
+<!-- STEP 2: Travelers -->
+<div class="step-card" data-step="2">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">2</div>
+<h2 class="text-xl font-bold text-gray-900">Traveler Information</h2>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-indigo-50/60 rounded-xl p-5 text-center border border-indigo-100/50">
+<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-user text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Adults</label>
+<input type="number" id="adults" value="1" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-indigo-100 rounded-xl focus:border-indigo-400 outline-none">
+</div>
+<div class="bg-amber-50/60 rounded-xl p-5 text-center border border-amber-100/50">
+<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-child text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Children</label>
+<input type="number" id="children" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-amber-100 rounded-xl focus:border-amber-400 outline-none">
+</div>
+<div class="bg-sky-50/60 rounded-xl p-5 text-center border border-sky-100/50">
+<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-baby text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Infants</label>
+<input type="number" id="infants" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-sky-100 rounded-xl focus:border-sky-400 outline-none">
+</div>
+</div>
+<div class="mt-4 p-3 bg-indigo-50 rounded-xl flex items-center justify-between">
+<span class="text-sm font-medium text-gray-600">Total Travelers</span>
+<span class="text-2xl font-extrabold text-indigo-700" id="totalPax">1</span>
+</div>
+<div class="mt-6 flex justify-between">
+<button type="button" onclick="goStep(1)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(3)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 3: Flights -->
+<div class="step-card" data-step="3">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-sky-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">3</div>
+<h2 class="text-xl font-bold text-gray-900">Flight Tickets</h2>
+</div>
+<div id="flightsC" class="space-y-3"></div>
+<button type="button" onclick="addFlight()" class="w-full py-3 border-2 border-dashed border-sky-200 hover:border-sky-400 bg-sky-50/50 hover:bg-sky-50 rounded-xl text-sky-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Flight</button>
+<div class="mt-3 p-3 bg-sky-50 rounded-xl flex items-center justify-between">
+<span class="text-sm text-gray-500">Section Total</span>
+<span class="text-lg font-bold text-sky-700" id="flightsT">PKR 0</span>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(2)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(4)" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 4: Visas -->
+<div class="step-card" data-step="4">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">4</div>
+<h2 class="text-xl font-bold text-gray-900">Visa Services</h2>
+</div>
+<div id="visasC" class="space-y-3"></div>
+<button type="button" onclick="addVisa()" class="w-full py-3 border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/50 hover:bg-emerald-50 rounded-xl text-emerald-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Visa</button>
+<div class="mt-3 space-y-1">
+<div class="p-3 bg-emerald-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-emerald-700" id="visasTSAR">SAR 0</span></div>
+<div class="p-3 bg-emerald-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-emerald-700" id="visasT">PKR 0</span></div>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(3)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(5)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 5: Transport -->
+<div class="step-card" data-step="5">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-amber-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">5</div>
+<h2 class="text-xl font-bold text-gray-900">Transport</h2>
+</div>
+<div id="transportC" class="space-y-3"></div>
+<button type="button" onclick="addTransport()" class="w-full py-3 border-2 border-dashed border-amber-200 hover:border-amber-400 bg-amber-50/50 hover:bg-amber-50 rounded-xl text-amber-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Transport</button>
+<div class="mt-3 space-y-1">
+<div class="p-3 bg-amber-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-amber-700" id="transportTSAR">SAR 0</span></div>
+<div class="p-3 bg-amber-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-amber-700" id="transportT">PKR 0</span></div>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(4)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(6)" class="px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 6: Hotels -->
+<div class="step-card" data-step="6">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-rose-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">6</div>
+<h2 class="text-xl font-bold text-gray-900">Hotels</h2>
+</div>
+<div id="hotelsC" class="space-y-3"></div>
+<button type="button" onclick="addHotel()" class="w-full py-3 border-2 border-dashed border-rose-200 hover:border-rose-400 bg-rose-50/50 hover:bg-rose-50 rounded-xl text-rose-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Hotel</button>
+<div class="mt-3 space-y-1">
+<div class="p-3 bg-rose-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-rose-700" id="hotelsTSAR">SAR 0</span></div>
+<div class="p-3 bg-rose-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-rose-700" id="hotelsT">PKR 0</span></div>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(5)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(7)" class="px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 7: Ziarat -->
+<div class="step-card" data-step="7">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-purple-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">7</div>
+<h2 class="text-xl font-bold text-gray-900">Ziarat Tours</h2>
+</div>
+<div id="ziaratC" class="space-y-3"></div>
+<button type="button" onclick="addZiarat()" class="w-full py-3 border-2 border-dashed border-purple-200 hover:border-purple-400 bg-purple-50/50 hover:bg-purple-50 rounded-xl text-purple-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Ziarat Tour</button>
+<div class="mt-3 space-y-1">
+<div class="p-3 bg-purple-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-purple-700" id="ziaratTSAR">SAR 0</span></div>
+<div class="p-3 bg-purple-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-purple-700" id="ziaratT">PKR 0</span></div>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(6)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(8)" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 8: Extras -->
+<div class="step-card" data-step="8">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-teal-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">8</div>
+<h2 class="text-xl font-bold text-gray-900">Extra Services</h2>
+</div>
+<div id="extrasC" class="space-y-3"></div>
+<button type="button" onclick="addExtra()" class="w-full py-3 border-2 border-dashed border-teal-200 hover:border-teal-400 bg-teal-50/50 hover:bg-teal-50 rounded-xl text-teal-700 font-semibold text-sm transition"><i class="fa-solid fa-plus-circle mr-1"></i> Add Extra Service</button>
+<div class="mt-3 space-y-1">
+<div class="p-3 bg-teal-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-teal-700" id="extrasTSAR">SAR 0</span></div>
+<div class="p-3 bg-teal-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-teal-700" id="extrasT">PKR 0</span></div>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(7)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(9)" class="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 9: Profit -->
+<div class="step-card" data-step="9">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md">9</div>
+<h2 class="text-xl font-bold text-gray-900">Profit Settings</h2>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-indigo-50/60 rounded-xl p-5 text-center border border-indigo-100/50">
+<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-user text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Per Adult</label>
+<input type="number" id="profA" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-indigo-100 rounded-xl outline-none">
+</div>
+<div class="bg-amber-50/60 rounded-xl p-5 text-center border border-amber-100/50">
+<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-child text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Per Child</label>
+<input type="number" id="profC" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-amber-100 rounded-xl outline-none">
+</div>
+<div class="bg-sky-50/60 rounded-xl p-5 text-center border border-sky-100/50">
+<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-baby text-white text-xl"></i></div>
+<label class="text-sm font-semibold text-gray-600 mb-2 block">Per Infant</label>
+<input type="number" id="profI" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-sky-100 rounded-xl outline-none">
+</div>
+</div>
+<div class="mt-4 p-3 bg-emerald-50 rounded-xl flex items-center justify-between">
+<span class="text-sm text-gray-500">Total Profit</span>
+<span class="text-2xl font-extrabold text-emerald-700" id="profitT">PKR 0</span>
+</div>
+<div class="mt-5 flex justify-between">
+<button type="button" onclick="goStep(8)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(10)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm">Summary <i class="fa-solid fa-arrow-right ml-1"></i></button>
+</div>
+</div>
+</div>
+
+<!-- STEP 10: Summary -->
+<div class="step-card" data-step="10">
+<div class="glass-dark rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-white/60 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center text-white shadow-md"><i class="fa-solid fa-star text-xs"></i></div>
+<h2 class="text-xl font-bold text-gray-900">Summary & PDF</h2>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-5">
+<div class="p-5 bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl border border-emerald-200">
+<div class="text-sm text-emerald-600 mb-1">Total PKR</div>
+<div class="text-2xl font-extrabold text-emerald-700" id="sumPKR">PKR 0</div>
+</div>
+<div class="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-200">
+<div class="text-sm text-blue-600 mb-1">Total SAR</div>
+<div class="text-2xl font-extrabold text-blue-700" id="sumSAR">SAR 0</div>
+</div>
+</div>
+
+<div class="mb-5">
+<h3 class="text-sm font-bold text-gray-700 mb-3">Per Person Breakdown</h3>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<div class="bg-indigo-50/80 rounded-xl p-4 border border-indigo-100">
+<div class="text-xs text-indigo-500 font-semibold">Adult</div>
+<div class="text-lg font-bold text-gray-800"><span id="ppA">PKR 0</span></div>
+<div class="text-xs text-gray-400"><span id="ppASAR">SAR 0.00</span></div>
+</div>
+<div class="bg-amber-50/80 rounded-xl p-4 border border-amber-100">
+<div class="text-xs text-amber-500 font-semibold">Child</div>
+<div class="text-lg font-bold text-gray-800"><span id="ppC">PKR 0</span></div>
+<div class="text-xs text-gray-400"><span id="ppCSAR">SAR 0.00</span></div>
+</div>
+<div class="bg-sky-50/80 rounded-xl p-4 border border-sky-100">
+<div class="text-xs text-sky-500 font-semibold">Infant</div>
+<div class="text-lg font-bold text-gray-800"><span id="ppI">PKR 0</span></div>
+<div class="text-xs text-gray-400"><span id="ppISAR">SAR 0.00</span></div>
+</div>
+</div>
+</div>
+
+<div class="mb-5">
+<h3 class="text-sm font-bold text-gray-700 mb-3">Cost Breakdown</h3>
+<div class="bg-white rounded-xl p-4 border border-gray-100 text-sm space-y-1.5" id="breakdown"></div>
+</div>
+
+<div class="mb-5">
+<h3 class="text-sm font-bold text-gray-700 mb-3">Generate PDF</h3>
+<div class="grid grid-cols-2 gap-3">
+<button type="button" onclick="genPDF('detailed')" class="p-4 bg-indigo-50/80 rounded-xl border-2 border-indigo-200 hover:border-indigo-500 text-left shadow-sm transition">
+<div class="font-bold text-gray-800 text-sm"><i class="fa-solid fa-file-pdf text-indigo-500 mr-1"></i> Detailed PDF</div>
+<div class="text-xs text-gray-500 mt-0.5">Full cost breakdown with all items</div>
+</button>
+<button type="button" onclick="genPDF('summary')" class="p-4 bg-emerald-50/80 rounded-xl border-2 border-emerald-200 hover:border-emerald-500 text-left shadow-sm transition">
+<div class="font-bold text-gray-800 text-sm"><i class="fa-solid fa-file-pdf text-emerald-500 mr-1"></i> Summary PDF</div>
+<div class="text-xs text-gray-500 mt-0.5">Client version, totals only</div>
+</button>
+</div>
+</div>
+
+<div class="flex justify-between">
+<button type="button" onclick="goStep(9)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+</div>
+</div>
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<script>
+// ===== GLOBALS =====
+var curStep = 1;
+var fId = 0, vId = 0, tId = 0, hId = 0, zId = 0, eId = 0;
+var stepNames = ['Package','Travelers','Flights','Visas','Transport','Hotels','Ziarat','Extras','Profit','Summary'];
+var stepIcons = ['fa-tag','fa-users','fa-plane','fa-passport','fa-bus','fa-hotel','fa-mosque','fa-cubes','fa-chart-line','fa-file-invoice'];
+
+// ===== HELPERS =====
+function $(id) { var e = document.getElementById(id); return e ? e.value : ''; }
+function $el(id) { return document.getElementById(id); }
+function setText(id, v) { var e = $el(id); if (e) e.textContent = v; }
+function getPax() {
+  return { a: parseInt($('adults')) || 0, c: parseInt($('children')) || 0, i: parseInt($('infants')) || 0 };
+}
+function getRate() { return parseFloat($('exRate')) || 75; }
+
+// ===== NAVIGATION =====
+function goStep(n) {
+  try {
+    if (n < 1 || n > 10) return;
+    var cards = document.querySelectorAll('.step-card');
+    for (var j = 0; j < cards.length; j++) { cards[j].classList.remove('active'); }
+    var el = document.querySelector('.step-card[data-step="' + n + '"]');
+    if (el) el.classList.add('active');
+    curStep = n;
+    renderSidebar();
+    renderMobile();
+    if (n === 10) updateSum();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (e) { alert('Navigation error: ' + e.message); }
+}
+
+function renderSidebar() {
+  var sb = $el('sidebarMenu');
+  if (!sb) return;
+  var h = '';
+  for (var i = 0; i < stepNames.length; i++) {
+    var s = i + 1, a = '', d = '';
+    if (s === curStep) a = ' active';
+    else if (s < curStep) d = ' done';
+    var icon = s < curStep ? '<i class="fa-solid fa-check text-xs"></i>' : '<i class="fa-solid ' + stepIcons[i] + ' text-xs"></i>';
+    h += '<div class="sidebar-item' + a + d + '" onclick="goStep(' + s + ')"><span class="snum">' + icon + '</span>' + stepNames[i] + '</div>';
+  }
+  sb.innerHTML = h;
+}
+
+function renderMobile() {
+  var mb = $el('mobileSteps');
+  if (!mb) return;
+  var h = '';
+  for (var i = 0; i < stepNames.length; i++) {
+    var s = i + 1;
+    var c = s === curStep ? 'bg-indigo-600 text-white' : s < curStep ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-500';
+    h += '<div class="flex items-center gap-1"><span class="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ' + c + '">' + s + '</span>';
+    if (i < stepNames.length - 1) h += '<span class="w-3 h-0.5 ' + (s <= curStep ? 'bg-indigo-300' : 'bg-gray-200') + '"></span>';
+    h += '</div>';
+  }
+  mb.innerHTML = h;
+}
+
+// ===== CALCULATIONS =====
+function calcAll() {
+  try {
+    var p = getPax(), tp = p.a + p.c + p.i, er = getRate();
+    setText('totalPax', tp);
+
+    // Flights
+    var ft = 0;
+    for (var i = 1; i <= fId; i++) {
+      var c = $el('fc' + i), t = $el('ft' + i);
+      if (c && t) {
+        var v = parseFloat(c.value) || 0, ty = t.value;
+        if (ty === 'all') ft += v * tp;
+        else if (ty === 'adult') ft += v * p.a;
+        else if (ty === 'child') ft += v * p.c;
+      }
+    }
+    setText('flightsT', 'PKR ' + ft.toLocaleString());
+
+    // Visas
+    var vs = 0;
+    for (var i = 1; i <= vId; i++) {
+      var c = $el('vc' + i), h = $el('vh' + i);
+      if (c) {
+        var s = parseFloat(c.value) || 0;
+        vs += s * tp;
+        if (h) h.textContent = 'PKR ' + (s * er).toLocaleString();
+      }
+    }
+    setText('visasTSAR', 'SAR ' + vs.toLocaleString());
+    setText('visasT', 'PKR ' + (vs * er).toLocaleString());
+
+    // Transport
+    var ttSAR = 0;
+    for (var i = 1; i <= tId; i++) { var c = $el('tc' + i), h = $el('th' + i); if (c) { var s = parseFloat(c.value) || 0; ttSAR += s; if (h) h.textContent = 'PKR ' + (s * er).toLocaleString(); } }
+    setText('transportTSAR', 'SAR ' + ttSAR.toLocaleString());
+    setText('transportT', 'PKR ' + (ttSAR * er).toLocaleString());
+
+    // Hotels
+    var htSAR = 0;
+    for (var i = 1; i <= hId; i++) {
+      var c = $el('hco2' + i), n = $el('hn' + i), h = $el('hh' + i);
+      if (c && n) { var s = parseFloat(c.value) || 0; var nights = parseInt(n.textContent) || 0; htSAR += s * nights; if (h) h.textContent = 'PKR ' + (s * er).toLocaleString() + '/nt'; }
+    }
+    setText('hotelsTSAR', 'SAR ' + htSAR.toLocaleString());
+    setText('hotelsT', 'PKR ' + (htSAR * er).toLocaleString());
+
+    // Ziarat
+    var ztSAR = 0;
+    for (var i = 1; i <= zId; i++) { var c = $el('zc' + i), h = $el('zh' + i); if (c) { var s = parseFloat(c.value) || 0; ztSAR += s * tp; if (h) h.textContent = 'PKR ' + (s * er).toLocaleString() + '/pax'; } }
+    setText('ziaratTSAR', 'SAR ' + ztSAR.toLocaleString());
+    setText('ziaratT', 'PKR ' + (ztSAR * er).toLocaleString());
+
+    // Extras
+    var etSAR = 0;
+    for (var i = 1; i <= eId; i++) { var c = $el('ec' + i), h = $el('eh' + i); if (c) { var s = parseFloat(c.value) || 0; etSAR += s * tp; if (h) h.textContent = 'PKR ' + (s * er).toLocaleString() + '/pax'; } }
+    setText('extrasTSAR', 'SAR ' + etSAR.toLocaleString());
+    setText('extrasT', 'PKR ' + (etSAR * er).toLocaleString());
+
+    // Profit
+    var pa = parseFloat($('profA')) || 0, pc = parseFloat($('profC')) || 0, pi = parseFloat($('profI')) || 0;
+    var pt = pa * p.a + pc * p.c + pi * p.i;
+    setText('profitT', 'PKR ' + pt.toLocaleString());
+  } catch (e) { console.log('calcAll error:', e); }
+}
+
+function getTotals() {
+  var p = getPax(), tp = p.a + p.c + p.i, er = getRate();
+  var ft = 0;
+  for (var i = 1; i <= fId; i++) { var c = $el('fc' + i), t = $el('ft' + i); if (c && t) { var v = parseFloat(c.value) || 0, ty = t.value; if (ty === 'all') ft += v * tp; else if (ty === 'adult') ft += v * p.a; else if (ty === 'child') ft += v * p.c; } }
+  var vs = 0; for (var i = 1; i <= vId; i++) { var c = $el('vc' + i); if (c) vs += (parseFloat(c.value) || 0) * tp; }
+  var ttSAR = 0; for (var i = 1; i <= tId; i++) { var c = $el('tc' + i); if (c) ttSAR += parseFloat(c.value) || 0; }
+  var htSAR = 0; for (var i = 1; i <= hId; i++) { var c = $el('hco2' + i), n = $el('hn' + i); if (c && n) htSAR += (parseFloat(c.value) || 0) * (parseInt(n.textContent) || 0); }
+  var ztSAR = 0; for (var i = 1; i <= zId; i++) { var c = $el('zc' + i); if (c) ztSAR += (parseFloat(c.value) || 0) * tp; }
+  var etSAR = 0; for (var i = 1; i <= eId; i++) { var c = $el('ec' + i); if (c) etSAR += (parseFloat(c.value) || 0) * tp; }
+  var pa = parseFloat($('profA')) || 0, pc = parseFloat($('profC')) || 0, pi = parseFloat($('profI')) || 0;
+  var pt = pa * p.a + pc * p.c + pi * p.i;
+  var gt = ft + (vs * er) + (ttSAR * er) + (htSAR * er) + (ztSAR * er) + (etSAR * er) + pt;
+  return {
+    f: ft, v: vs * er, vsRaw: vs, tr: ttSAR * er, trRaw: ttSAR,
+    h: htSAR * er, hRaw: htSAR, z: ztSAR * er, zRaw: ztSAR,
+    e: etSAR * er, eRaw: etSAR, p: pt,
+    gt: gt, gs: gt / er,
+    pa: p.a ? gt / p.a : 0, pc: p.c ? gt / p.c : 0, pi: p.i ? gt / p.i : 0,
+    a: p.a, c: p.c, i: p.i, tp: tp, er: er
+  };
+}
+
+function updateSum() {
+  try {
+    var d = getTotals();
+    setText('sumPKR', 'PKR ' + d.gt.toLocaleString());
+    setText('sumSAR', 'SAR ' + d.gs.toFixed(2));
+    setText('ppA', 'PKR ' + d.pa.toFixed(0));
+    setText('ppASAR', 'SAR ' + (d.pa / d.er).toFixed(2));
+    setText('ppC', 'PKR ' + d.pc.toFixed(0));
+    setText('ppCSAR', 'SAR ' + (d.pc / d.er).toFixed(2));
+    setText('ppI', 'PKR ' + d.pi.toFixed(0));
+    setText('ppISAR', 'SAR ' + (d.pi / d.er).toFixed(2));
+    var b = $el('breakdown');
+    if (b) {
+      b.innerHTML =
+        '<div class="flex justify-between"><span>Travelers</span><span class="font-semibold">' + d.tp + ' (' + d.a + 'A, ' + d.c + 'C, ' + d.i + 'I)</span></div>' +
+        '<div class="flex justify-between"><span>Exchange Rate</span><span class="font-semibold">1 SAR = ' + d.er + ' PKR</span></div>' +
+        '<div class="h-px bg-gray-100 my-1.5"></div>' +
+        (d.f > 0 ? '<div class="flex justify-between"><span>Flights</span><span class="font-semibold">PKR ' + d.f.toLocaleString() + '</span></div>' : '') +
+        (d.v > 0 ? '<div class="flex justify-between"><span>Visas</span><span class="font-semibold">PKR ' + d.v.toLocaleString() + ' (SAR ' + d.vsRaw.toFixed(0) + ')</span></div>' : '') +
+        (d.tr > 0 ? '<div class="flex justify-between"><span>Transport</span><span class="font-semibold">PKR ' + d.tr.toLocaleString() + ' (SAR ' + d.trRaw.toFixed(0) + ')</span></div>' : '') +
+        (d.h > 0 ? '<div class="flex justify-between"><span>Hotels</span><span class="font-semibold">PKR ' + d.h.toLocaleString() + ' (SAR ' + d.hRaw.toFixed(0) + ')</span></div>' : '') +
+        (d.z > 0 ? '<div class="flex justify-between"><span>Ziarat</span><span class="font-semibold">PKR ' + d.z.toLocaleString() + ' (SAR ' + d.zRaw.toFixed(0) + ')</span></div>' : '') +
+        (d.e > 0 ? '<div class="flex justify-between"><span>Extras</span><span class="font-semibold">PKR ' + d.e.toLocaleString() + ' (SAR ' + d.eRaw.toFixed(0) + ')</span></div>' : '') +
+        (d.p > 0 ? '<div class="flex justify-between"><span>Profit</span><span class="font-semibold">PKR ' + d.p.toLocaleString() + '</span></div>' : '') +
+        '<div class="h-px bg-indigo-100 my-1.5"></div>' +
+        '<div class="flex justify-between text-indigo-700 font-bold"><span>Grand Total</span><span>PKR ' + d.gt.toLocaleString() + ' | SAR ' + d.gs.toFixed(2) + '</span></div>';
+    }
+  } catch (e) { console.log('updateSum error:', e); }
+}
+
+// ===== DYNAMIC ITEMS =====
+function addFlight(d) {
+  fId++; var id = fId, c = $el('flightsC'); if (!c) return;
+  var de = (d && d.desc) || '', co = (d && d.cost) || '', ty = (d && d.type) || 'all';
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'f' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-plane text-sky-500 mr-1"></i> Flight #' + id + '</span><button type="button" onclick="rm(\'f' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="col-span-2"><input type="text" id="fd' + id + '" placeholder="e.g., Dubai to Jeddah" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Cost (PKR)</label><input type="number" id="fc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Type</label><select id="ft' + id + '" onchange="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
+    '<option value="all"' + (ty === 'all' ? ' selected' : '') + '>All Travelers</option>' +
+    '<option value="adult"' + (ty === 'adult' ? ' selected' : '') + '>Adults Only</option>' +
+    '<option value="child"' + (ty === 'child' ? ' selected' : '') + '>Children Only</option></select></div></div>';
+  c.appendChild(div); calcAll();
+}
+
+function addVisa(d) {
+  vId++; var id = vId, c = $el('visasC'); if (!c) return;
+  var de = (d && d.desc) || '', co = (d && d.cost) || '';
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'v' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-passport text-emerald-500 mr-1"></i> Visa #' + id + '</span><button type="button" onclick="rm(\'v' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div><input type="text" id="vd' + id + '" placeholder="Visa type" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Cost (SAR)</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="vc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div class="text-[11px] text-gray-400 mt-0.5" id="vh' + id + '">PKR: 0</div></div></div>';
+  c.appendChild(div); calcAll();
+}
+
+function addTransport(d) {
+  tId++; var id = tId, c = $el('transportC'); if (!c) return;
+  var fr = (d && d.from) || '', ty = (d && d.type) || 'bus', co = (d && d.cost) || '';
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 't' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-bus text-amber-500 mr-1"></i> Transport #' + id + '</span><button type="button" onclick="rm(\'t' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div><input type="text" id="td' + id + '" placeholder="From" value="' + fr + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><select id="tt' + id + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
+    '<option value="bus"' + (ty === 'bus' ? ' selected' : '') + '>Bus</option>' +
+    '<option value="van"' + (ty === 'van' ? ' selected' : '') + '>Van</option>' +
+    '<option value="car"' + (ty === 'car' ? ' selected' : '') + '>Car</option></select></div>' +
+    '<div><label class="text-xs text-gray-500">Date</label><input type="date" id="tda' + id + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Cost (SAR)</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="tc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="th' + id + '">PKR: 0</div></div></div>';
+  c.appendChild(div); calcAll();
+}
+
+function addHotel(d) {
+  hId++; var id = hId, c = $el('hotelsC'); if (!c) return;
+  var nm = (d && d.name) || '', cy = (d && d.city) || 'Makkah', co = (d && d.cost) || '';
+  var today = new Date().toISOString().split('T')[0];
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'h' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-hotel text-rose-500 mr-1"></i> Hotel #' + id + '</span><button type="button" onclick="rm(\'h' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div><input type="text" id="hnm' + id + '" placeholder="Hotel name" value="' + nm + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><select id="hc' + id + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
+    '<option value="Makkah"' + (cy === 'Makkah' ? ' selected' : '') + '>Makkah</option>' +
+    '<option value="Madinah"' + (cy === 'Madinah' ? ' selected' : '') + '>Madinah</option></select></div>' +
+    '<div><label class="text-xs text-gray-500">Check-in</label><input type="date" id="hci' + id + '" value="' + today + '" onchange="calN(' + id + ')" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Check-out</label><input type="date" id="hco' + id + '" value="' + today + '" onchange="calN(' + id + ')" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Nights</label><div class="px-3 py-2 bg-indigo-50 border border-indigo-100 rounded-lg text-sm font-bold text-indigo-700" id="hn' + id + '">0</div></div>' +
+    '<div><label class="text-xs text-gray-500">Rate/Night (SAR)</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="hco2' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="hh' + id + '">PKR: 0</div></div></div>';
+  c.appendChild(div); calN(id);
+}
+
+function calN(id) {
+  var ci = $el('hci' + id), co = $el('hco' + id), n = $el('hn' + id);
+  if (ci && co && n && ci.value && co.value) {
+    var d1 = new Date(ci.value), d2 = new Date(co.value);
+    n.textContent = Math.max(0, Math.floor((d2 - d1) / 86400000));
+  } else if (n) { n.textContent = '0'; }
+  calcAll();
+}
+
+function addZiarat(d) {
+  zId++; var id = zId, c = $el('ziaratC'); if (!c) return;
+  var de = (d && d.desc) || '', co = (d && d.cost) || '';
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'z' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-mosque text-purple-500 mr-1"></i> Ziarat #' + id + '</span><button type="button" onclick="rm(\'z' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div><input type="text" id="zd' + id + '" placeholder="Tour description" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Cost (SAR) per person</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="zc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="zh' + id + '">PKR: 0</div></div></div>';
+  c.appendChild(div); calcAll();
+}
+
+function addExtra(d) {
+  eId++; var id = eId, c = $el('extrasC'); if (!c) return;
+  var de = (d && d.desc) || '', co = (d && d.cost) || '';
+  var div = document.createElement('div');
+  div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'e' + id;
+  div.innerHTML =
+    '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-cube text-teal-500 mr-1"></i> Extra #' + id + '</span><button type="button" onclick="rm(\'e' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
+    '<div class="grid grid-cols-2 gap-3">' +
+    '<div><input type="text" id="ed' + id + '" placeholder="Service" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div><label class="text-xs text-gray-500">Cost (SAR) per person</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="ec' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="eh' + id + '">PKR: 0</div></div></div>';
+  c.appendChild(div); calcAll();
+}
+
+function rm(id) {
+  var e = $el(id); if (e) { e.remove(); calcAll(); }
+}
+
+// ===== PDF =====
+function genPDF(mode) {
+  try {
+    var j = window.jspdf;
+    if (!j) { alert('PDF library not loaded. Check internet connection.'); return; }
+    var d = getTotals();
+    var doc = new j.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pw = 210, m = 14, cw = pw - 2 * m, y = m;
+    var ttl = $('pkgTitle') || 'Umrah Package', cust = $('custName') || 'N/A', ph = $('custPhone') || 'N/A';
+
+    doc.setFontSize(7); doc.setFont('helvetica', 'normal'); doc.setTextColor(150, 150, 150);
+    doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6);
+    doc.setDrawColor(200, 200, 200); doc.setLineWidth(0.3); doc.line(m, 8, pw - m, 8);
+    y = 14;
+    doc.setFontSize(18); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+    doc.text('UMRAH PACKAGE QUOTATION', m, y); y += 8;
+    doc.setFontSize(9); doc.setFont('helvetica', 'normal'); doc.setTextColor(100, 100, 100);
+    doc.text('Package: ' + ttl + '  |  Customer: ' + cust + '  |  Phone: ' + ph, m, y); y += 5;
+    doc.text('Rate: 1 SAR = ' + d.er + ' PKR  |  Travelers: ' + d.tp + ' (' + d.a + 'A, ' + d.c + 'C, ' + d.i + 'I)', m, y); y += 6;
+    doc.setDrawColor(30, 58, 95); doc.setLineWidth(0.6); doc.line(m, y, pw - m, y); y += 6;
+
+    if (mode === 'detailed') {
+      // Flights section
+      if (d.f > 0 && fId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Flights', m, y); y += 6;
+        var fd = [];
+        for (var i = 1; i <= fId; i++) { var de = $el('fd' + i), co = $el('fc' + i), ty = $el('ft' + i); if (de && co) fd.push([de.value || 'Flight', ty ? ty.value : '', 'PKR ' + (parseFloat(co.value) || 0) + '/pax']); }
+        if (fd.length) { doc.autoTable({ startY: y, head: [['Desc', 'Type', 'Cost']], body: fd, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Visas section
+      if (d.v > 0 && vId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Visas', m, y); y += 6;
+        var vd = [];
+        for (var i = 1; i <= vId; i++) { var de = $el('vd' + i), co = $el('vc' + i); if (de && co) { var s = parseFloat(co.value) || 0; vd.push([de.value || 'Visa', 'SAR ' + s + '/pax', 'PKR ' + (s * d.er).toFixed(0) + '/pax']); } }
+        if (vd.length) { doc.autoTable({ startY: y, head: [['Type', 'SAR', 'PKR']], body: vd, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Transport section
+      if (d.tr > 0 && tId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Transport', m, y); y += 6;
+        var td = [];
+        for (var i = 1; i <= tId; i++) { var fr = $el('td' + i), ty = $el('tt' + i), co = $el('tc' + i); if (fr && co) { var sv = parseFloat(co.value) || 0; td.push([fr.value || 'Transport', ty ? ty.value : '', 'SAR ' + sv, 'PKR ' + (sv * d.er).toFixed(0)]); } }
+        if (td.length) { doc.autoTable({ startY: y, head: [['From', 'Type', 'SAR', 'PKR']], body: td, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Hotels section
+      if (d.h > 0 && hId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Hotels', m, y); y += 6;
+        var hd = [];
+        for (var i = 1; i <= hId; i++) { var nm = $el('hnm' + i), cy = $el('hc' + i), ni = $el('hn' + i), co = $el('hco2' + i); if (nm && co) { var sv = parseFloat(co.value) || 0; hd.push([nm.value || 'Hotel', cy ? cy.value : '', (ni ? ni.textContent : '0') + ' nts', 'SAR ' + sv + '/nt', 'PKR ' + (sv * d.er).toFixed(0) + '/nt']); } }
+        if (hd.length) { doc.autoTable({ startY: y, head: [['Hotel', 'City', 'Nts', 'Rate (SAR)', 'Rate (PKR)']], body: hd, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Ziarat section
+      if (d.z > 0 && zId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Ziarat Tours', m, y); y += 6;
+        var zd = [];
+        for (var i = 1; i <= zId; i++) { var de = $el('zd' + i), co = $el('zc' + i); if (de && co) { var sv = parseFloat(co.value) || 0; zd.push([de.value || 'Tour', 'SAR ' + sv + '/pax', 'PKR ' + (sv * d.er).toFixed(0) + '/pax']); } }
+        if (zd.length) { doc.autoTable({ startY: y, head: [['Desc', 'SAR', 'PKR']], body: zd, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Extras section
+      if (d.e > 0 && eId > 0) {
+        doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+        doc.text('Extra Services', m, y); y += 6;
+        var ed = [];
+        for (var i = 1; i <= eId; i++) { var de = $el('ed' + i), co = $el('ec' + i); if (de && co) { var sv = parseFloat(co.value) || 0; ed.push([de.value || 'Service', 'SAR ' + sv + '/pax', 'PKR ' + (sv * d.er).toFixed(0) + '/pax']); } }
+        if (ed.length) { doc.autoTable({ startY: y, head: [['Desc', 'SAR', 'PKR']], body: ed, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' }); y = doc.lastAutoTable.finalY + 5; }
+        if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      }
+      // Profit section
+      if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+      doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+      doc.text('Profit', m, y); y += 6;
+      doc.autoTable({ startY: y, head: [['Type', 'Amount']], body: [['Per Adult', 'PKR ' + ($('profA') || '0')], ['Per Child', 'PKR ' + ($('profC') || '0')], ['Per Infant', 'PKR ' + ($('profI') || '0')]], margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 7 }, theme: 'grid' });
+      y = doc.lastAutoTable.finalY + 5;
+    }
+
+    // Grand Total Box
+    if (y > 240) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+    doc.setFillColor(30, 58, 95); doc.rect(m, y, cw, 24, 'F');
+    doc.setTextColor(255, 255, 255); doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+    doc.text('GRAND TOTAL', m + 5, y + 7);
+    doc.setFontSize(14); doc.setFont('helvetica', 'bold');
+    doc.text('PKR ' + d.gt.toLocaleString() + '  |  SAR ' + d.gs.toFixed(2), m + 5, y + 19);
+    y += 30;
+
+    // Per Person
+    if (y > 250) { doc.addPage(); y = m; doc.setFontSize(7); doc.text('Air Dubai Umrah Calculator | KQ Software Solutions', m, 6); doc.line(m, 8, pw - m, 8); y = 14; }
+    doc.setFontSize(11); doc.setFont('helvetica', 'bold'); doc.setTextColor(30, 58, 95);
+    doc.text('Per Person', m, y); y += 6;
+    var pp = [];
+    if (d.a > 0) pp.push(['Adult', d.a + ' pax', 'PKR ' + d.pa.toFixed(0), 'SAR ' + (d.pa / d.er).toFixed(2)]);
+    if (d.c > 0) pp.push(['Child', d.c + ' pax', 'PKR ' + d.pc.toFixed(0), 'SAR ' + (d.pc / d.er).toFixed(2)]);
+    if (d.i > 0) pp.push(['Infant', d.i + ' pax', 'PKR ' + d.pi.toFixed(0), 'SAR ' + (d.pi / d.er).toFixed(2)]);
+    if (pp.length) {
+      doc.autoTable({ startY: y, head: [['Type', 'Count', 'PKR', 'SAR']], body: pp, margin: { l: m, r: m }, headStyles: { fillColor: [30, 58, 95], fontSize: 8 }, bodyStyles: { fontSize: 8 }, theme: 'grid' });
+      y = doc.lastAutoTable.finalY + 5;
+    }
+
+    // Footer
+    doc.setDrawColor(220, 220, 220); doc.setLineWidth(0.3); doc.line(m, 290, pw - m, 290);
+    doc.setFontSize(7); doc.setTextColor(180, 180, 180);
+    doc.text('Air Dubai Umrah Calculator - KQ Software Solutions', m, 294);
+    doc.text('Page ' + doc.internal.getNumberOfPages(), pw - m, 294, { align: 'right' });
+
+    var filename = (ttl.replace(/[^a-zA-Z0-9]/g, '_') || 'Package') + '_Quotation.pdf';
+    doc.save(filename);
+  } catch (e) { alert('PDF Error: ' + e.message); }
+}
+
+// ===== INIT =====
+function init() {
+  renderSidebar(); renderMobile(); calcAll();
+  addFlight({ desc: 'Dubai to Jeddah', cost: 150000, type: 'all' });
+  addVisa({ desc: 'Umrah Visa', cost: 200 });
+  addTransport({ from: 'Airport to Hotel', type: 'van', cost: 70 });
+  addHotel({ name: 'Makkah 4-Star', city: 'Makkah', cost: 200 });
+  addZiarat({ desc: 'Full Ziarat Package', cost: 70 });
+  addExtra({ desc: 'Travel Insurance', cost: 30 });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
