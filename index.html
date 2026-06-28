@@ -787,7 +787,7 @@ function printSlip() {
     var ttl = $('pkgTitle') || 'Umrah Package', cust = $('custName') || 'N/A', ph = $('custPhone') || 'N/A';
     var er = getRate();
 
-    var w = window.open('', '_blank');
+    var w = window.open('', '_blank', 'width=400,height=600');
     if (!w) { alert('Please allow popups to print slip.'); return; }
 
     w.document.write('<html><head><title>Print Slip - ' + ttl + '</title>');
@@ -813,8 +813,8 @@ function printSlip() {
     w.document.write('.pp-box .pp-amount{font-size:14px;font-weight:bold;margin:2px 0}');
     w.document.write('.pp-box .pp-sar{font-size:10px}');
     w.document.write('.footer{text-align:center;font-size:8px;border-top:1px solid #999;padding-top:6px;margin-top:8px}');
-    w.document.write('@page{size:80mm auto;margin:0}');
-    w.document.write('@media print{body{width:80mm;padding:2mm}.no-print{display:none}}');
+    w.document.write('@page{size:80mm 297mm;margin:0;padding:0}');
+    w.document.write('@media print{html,body{width:80mm;margin:0;padding:2mm 3mm}.no-print{display:none}}');
     w.document.write('</style></head><body>');
 
     w.document.write('<div class="header">');
