@@ -25,8 +25,26 @@
 .sidebar-item.done{color:#059669}
 @media(max-width:768px){.sidebar-desktop{display:none}}
 @media print{.no-print{display:none!important}.step-card{display:block!important;break-inside:avoid}}
-input,select{transition:border-color .15s}
+input,select,button{transition:border-color .15s}
 input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+@media(max-width:640px){
+  .step-card .grid-cols-3{grid-template-columns:1fr!important}
+  .step-card .grid.grid-cols-2{grid-template-columns:1fr!important}
+  .step-nav{flex-direction:column;gap:8px}
+  .step-nav .btn-nav{width:100%;justify-content:center}
+  .step-nav .btn-back{order:2}
+  .step-nav .btn-next{order:1}
+  .step-card h2{font-size:1.1rem}
+  .step-card .glass-dark{padding:1rem!important}
+  .pax-icon{width:48px!important;height:48px!important}
+  .pax-icon i{font-size:1rem!important}
+  .summary-cards .p-5{padding:1rem!important}
+  .summary-cards .text-2xl{font-size:1.25rem!important}
+  .mobile-step-bar{-webkit-overflow-scrolling:touch}
+  .breakdown-text{font-size:12px}
+  .pdf-buttons{grid-template-columns:1fr!important}
+  .pb-safe{padding-bottom:24px}
+}
 </style>
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-indigo-50/30 to-blue-50/30 min-h-screen">
@@ -54,7 +72,7 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 </div>
 
 <!-- MAIN -->
-<div class="flex-1 min-w-0">
+<div class="flex-1 min-w-0 pb-safe">
 
 <!-- Header -->
 <div class="glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 mb-4 border border-white/50 shadow-lg shadow-indigo-500/5 relative overflow-hidden">
@@ -72,7 +90,7 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 </div>
 
 <!-- Mobile Steps -->
-<div class="sm:hidden glass rounded-2xl p-2 mb-3 border border-white/50 overflow-x-auto">
+<div class="sm:hidden glass rounded-2xl p-2 mb-3 border border-white/50 overflow-x-auto mobile-step-bar">
 <div class="flex gap-1 text-xs font-medium" id="mobileSteps"></div>
 </div>
 
@@ -91,7 +109,7 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Phone</label><input type="text" id="custPhone" placeholder="03XX-XXXXXXX" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm"></div>
 <div class="md:col-span-2"><label class="text-sm font-semibold text-gray-700 mb-1.5 block">Exchange Rate (1 SAR to PKR)</label><input type="number" id="exRate" value="75" step="0.5" min="1" oninput="calcAll()" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm font-semibold focus:border-indigo-400 outline-none"></div>
 </div>
-<div class="mt-6 flex justify-end"><button type="button" onclick="goStep(2)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
+<div class="mt-6 flex justify-end"><button type="button" onclick="goStep(2)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button></div>
 </div>
 </div>
 
@@ -104,17 +122,17 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 </div>
 <div class="grid grid-cols-3 gap-4">
 <div class="bg-indigo-50/60 rounded-xl p-5 text-center border border-indigo-100/50">
-<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-user text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-user text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Adults</label>
 <input type="number" id="adults" value="1" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-indigo-100 rounded-xl focus:border-indigo-400 outline-none">
 </div>
 <div class="bg-amber-50/60 rounded-xl p-5 text-center border border-amber-100/50">
-<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-child text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-child text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Children</label>
 <input type="number" id="children" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-amber-100 rounded-xl focus:border-amber-400 outline-none">
 </div>
 <div class="bg-sky-50/60 rounded-xl p-5 text-center border border-sky-100/50">
-<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-baby text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-baby text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Infants</label>
 <input type="number" id="infants" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-sky-100 rounded-xl focus:border-sky-400 outline-none">
 </div>
@@ -123,9 +141,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <span class="text-sm font-medium text-gray-600">Total Travelers</span>
 <span class="text-2xl font-extrabold text-indigo-700" id="totalPax">1</span>
 </div>
-<div class="mt-6 flex justify-between">
-<button type="button" onclick="goStep(1)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(3)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-6 flex justify-between step-nav">
+<button type="button" onclick="goStep(1)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(3)" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -143,9 +161,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <span class="text-sm text-gray-500">Section Total</span>
 <span class="text-lg font-bold text-sky-700" id="flightsT">PKR 0</span>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(2)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(4)" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(2)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(4)" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -163,9 +181,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="p-3 bg-emerald-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-emerald-700" id="visasTSAR">SAR 0</span></div>
 <div class="p-3 bg-emerald-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-emerald-700" id="visasT">PKR 0</span></div>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(3)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(5)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(3)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(5)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -183,9 +201,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="p-3 bg-amber-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-amber-700" id="transportTSAR">SAR 0</span></div>
 <div class="p-3 bg-amber-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-amber-700" id="transportT">PKR 0</span></div>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(4)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(6)" class="px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(4)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(6)" class="px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -203,9 +221,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="p-3 bg-rose-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-rose-700" id="hotelsTSAR">SAR 0</span></div>
 <div class="p-3 bg-rose-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-rose-700" id="hotelsT">PKR 0</span></div>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(5)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(7)" class="px-8 py-3 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(5)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(7)" class="px-8 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -223,9 +241,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="p-3 bg-purple-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-purple-700" id="ziaratTSAR">SAR 0</span></div>
 <div class="p-3 bg-purple-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-purple-700" id="ziaratT">PKR 0</span></div>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(6)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(8)" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(6)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(8)" class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -243,9 +261,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="p-3 bg-teal-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (SAR)</span><span class="text-lg font-bold text-teal-700" id="extrasTSAR">SAR 0</span></div>
 <div class="p-3 bg-teal-50 rounded-xl flex items-center justify-between"><span class="text-sm text-gray-500">Total (PKR)</span><span class="text-lg font-bold text-teal-700" id="extrasT">PKR 0</span></div>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(7)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(9)" class="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl shadow-lg text-sm">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(7)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(9)" class="px-8 py-3 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Next <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -259,17 +277,17 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 </div>
 <div class="grid grid-cols-3 gap-4">
 <div class="bg-indigo-50/60 rounded-xl p-5 text-center border border-indigo-100/50">
-<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-user text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-indigo-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-user text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Per Adult</label>
 <input type="number" id="profA" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-indigo-100 rounded-xl outline-none">
 </div>
 <div class="bg-amber-50/60 rounded-xl p-5 text-center border border-amber-100/50">
-<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-child text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-child text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Per Child</label>
 <input type="number" id="profC" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-amber-100 rounded-xl outline-none">
 </div>
 <div class="bg-sky-50/60 rounded-xl p-5 text-center border border-sky-100/50">
-<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3"><i class="fa-solid fa-baby text-white text-xl"></i></div>
+<div class="w-14 h-14 bg-sky-500 rounded-xl flex items-center justify-center mx-auto mb-3 pax-icon"><i class="fa-solid fa-baby text-white text-xl"></i></div>
 <label class="text-sm font-semibold text-gray-600 mb-2 block">Per Infant</label>
 <input type="number" id="profI" value="0" min="0" oninput="calcAll()" class="w-full text-center text-2xl font-bold py-2.5 bg-white border-2 border-sky-100 rounded-xl outline-none">
 </div>
@@ -278,9 +296,9 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <span class="text-sm text-gray-500">Total Profit</span>
 <span class="text-2xl font-extrabold text-emerald-700" id="profitT">PKR 0</span>
 </div>
-<div class="mt-5 flex justify-between">
-<button type="button" onclick="goStep(8)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
-<button type="button" onclick="goStep(10)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm">Summary <i class="fa-solid fa-arrow-right ml-1"></i></button>
+<div class="mt-5 flex justify-between step-nav">
+<button type="button" onclick="goStep(8)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<button type="button" onclick="goStep(10)" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl shadow-lg text-sm btn-nav btn-next">Summary <i class="fa-solid fa-arrow-right ml-1"></i></button>
 </div>
 </div>
 </div>
@@ -292,7 +310,7 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center text-white shadow-md"><i class="fa-solid fa-star text-xs"></i></div>
 <h2 class="text-xl font-bold text-gray-900">Summary & PDF</h2>
 </div>
-<div class="grid grid-cols-2 gap-4 mb-5">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5 summary-cards">
 <div class="p-5 bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl border border-emerald-200">
 <div class="text-sm text-emerald-600 mb-1">Total PKR</div>
 <div class="text-2xl font-extrabold text-emerald-700" id="sumPKR">PKR 0</div>
@@ -331,7 +349,7 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 
 <div class="mb-5">
 <h3 class="text-sm font-bold text-gray-700 mb-3">Generate PDF</h3>
-<div class="grid grid-cols-2 gap-3">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pdf-buttons">
 <button type="button" onclick="genPDF('detailed')" class="p-4 bg-indigo-50/80 rounded-xl border-2 border-indigo-200 hover:border-indigo-500 text-left shadow-sm transition">
 <div class="font-bold text-gray-800 text-sm"><i class="fa-solid fa-file-pdf text-indigo-500 mr-1"></i> Detailed PDF</div>
 <div class="text-xs text-gray-500 mt-0.5">Full cost breakdown with all items</div>
@@ -341,10 +359,14 @@ input:focus,select:focus{border-color:#6366f1!important;outline:none;box-shadow:
 <div class="text-xs text-gray-500 mt-0.5">Client version, totals only</div>
 </button>
 </div>
+<button type="button" onclick="printSlip()" class="mt-3 w-full p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border-2 border-amber-300 hover:border-amber-500 text-left shadow-sm transition">
+<div class="font-bold text-gray-800 text-sm"><i class="fa-solid fa-receipt text-amber-600 mr-1"></i> PRINT SLIP</div>
+<div class="text-xs text-gray-500 mt-0.5">Simple print-friendly slip with customer details &amp; totals</div>
+</button>
 </div>
 
-<div class="flex justify-between">
-<button type="button" onclick="goStep(9)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+<div class="flex justify-between step-nav">
+<button type="button" onclick="goStep(9)" class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl text-sm btn-nav btn-back"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
 </div>
 </div>
 </div>
@@ -540,8 +562,8 @@ function addFlight(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'f' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-plane text-sky-500 mr-1"></i> Flight #' + id + '</span><button type="button" onclick="rm(\'f' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
-    '<div class="col-span-2"><input type="text" id="fd' + id + '" placeholder="e.g., Dubai to Jeddah" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+    '<div class="sm:col-span-2"><input type="text" id="fd' + id + '" placeholder="e.g., Dubai to Jeddah" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><label class="text-xs text-gray-500">Cost (PKR)</label><input type="number" id="fc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><label class="text-xs text-gray-500">Type</label><select id="ft' + id + '" onchange="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
     '<option value="all"' + (ty === 'all' ? ' selected' : '') + '>All Travelers</option>' +
@@ -557,7 +579,7 @@ function addVisa(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'v' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-passport text-emerald-500 mr-1"></i> Visa #' + id + '</span><button type="button" onclick="rm(\'v' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
     '<div><input type="text" id="vd' + id + '" placeholder="Visa type" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><label class="text-xs text-gray-500">Cost (SAR)</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="vc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div class="text-[11px] text-gray-400 mt-0.5" id="vh' + id + '">PKR: 0</div></div></div>';
@@ -571,7 +593,7 @@ function addTransport(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 't' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-bus text-amber-500 mr-1"></i> Transport #' + id + '</span><button type="button" onclick="rm(\'t' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
     '<div><input type="text" id="td' + id + '" placeholder="From" value="' + fr + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><select id="tt' + id + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
     '<option value="bus"' + (ty === 'bus' ? ' selected' : '') + '>Bus</option>' +
@@ -590,7 +612,7 @@ function addHotel(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'h' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-hotel text-rose-500 mr-1"></i> Hotel #' + id + '</span><button type="button" onclick="rm(\'h' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
     '<div><input type="text" id="hnm' + id + '" placeholder="Hotel name" value="' + nm + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><select id="hc' + id + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm">' +
     '<option value="Makkah"' + (cy === 'Makkah' ? ' selected' : '') + '>Makkah</option>' +
@@ -618,7 +640,7 @@ function addZiarat(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'z' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-mosque text-purple-500 mr-1"></i> Ziarat #' + id + '</span><button type="button" onclick="rm(\'z' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
     '<div><input type="text" id="zd' + id + '" placeholder="Tour description" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><label class="text-xs text-gray-500">Cost (SAR) per person</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="zc' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="zh' + id + '">PKR: 0</div></div></div>';
   c.appendChild(div); calcAll();
@@ -631,7 +653,7 @@ function addExtra(d) {
   div.className = 'bg-white rounded-xl p-4 border border-gray-100 shadow-sm'; div.id = 'e' + id;
   div.innerHTML =
     '<div class="flex justify-between items-center mb-3"><span class="font-bold text-sm text-gray-800"><i class="fa-solid fa-cube text-teal-500 mr-1"></i> Extra #' + id + '</span><button type="button" onclick="rm(\'e' + id + '\')" class="text-red-400 hover:text-red-600 text-sm"><i class="fa-solid fa-trash-can"></i></button></div>' +
-    '<div class="grid grid-cols-2 gap-3">' +
+    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
     '<div><input type="text" id="ed' + id + '" placeholder="Service" value="' + de + '" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div>' +
     '<div><label class="text-xs text-gray-500">Cost (SAR) per person</label><div class="flex items-center gap-1"><span class="text-xs text-gray-400">SAR</span><input type="number" id="ec' + id + '" value="' + co + '" min="0" oninput="calcAll()" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"></div><div class="text-[11px] text-gray-400 mt-0.5" id="eh' + id + '">PKR: 0</div></div></div>';
   c.appendChild(div); calcAll();
@@ -756,6 +778,140 @@ function genPDF(mode) {
     var filename = (ttl.replace(/[^a-zA-Z0-9]/g, '_') || 'Package') + '_Quotation.pdf';
     doc.save(filename);
   } catch (e) { alert('PDF Error: ' + e.message); }
+}
+
+// ===== PRINT SLIP =====
+function printSlip() {
+  try {
+    var d = getTotals();
+    var ttl = $('pkgTitle') || 'Umrah Package', cust = $('custName') || 'N/A', ph = $('custPhone') || 'N/A';
+    var er = getRate();
+
+    var w = window.open('', '_blank');
+    if (!w) { alert('Please allow popups to print slip.'); return; }
+
+    w.document.write('<html><head><title>Print Slip - ' + ttl + '</title>');
+    w.document.write('<style>');
+    w.document.write('*{margin:0;padding:0;box-sizing:border-box}');
+    w.document.write('body{font-family:Arial,sans-serif;padding:30px;color:#222;max-width:550px;margin:0 auto}');
+    w.document.write('.header{text-align:center;border-bottom:3px double #1a3a5f;padding-bottom:12px;margin-bottom:16px}');
+    w.document.write('.header h1{font-size:20px;color:#1a3a5f;letter-spacing:1px}');
+    w.document.write('.header p{font-size:11px;color:#888;margin-top:4px}');
+    w.document.write('.info-table{width:100%;border-collapse:collapse;margin-bottom:14px}');
+    w.document.write('.info-table td{padding:5px 10px;font-size:13px;border-bottom:1px dashed #ddd}');
+    w.document.write('.info-table td:first-child{font-weight:600;color:#555;width:110px}');
+    w.document.write('.info-table td:last-child{text-align:right;font-weight:500}');
+    w.document.write('.section{margin-bottom:14px}');
+    w.document.write('.section-title{font-size:14px;font-weight:bold;color:#1a3a5f;border-bottom:2px solid #1a3a5f;padding-bottom:4px;margin-bottom:6px}');
+    w.document.write('.section-item{padding:4px 8px;font-size:13px;border-bottom:1px solid #f0f0f0}');
+    w.document.write('.total-box{background:#1a3a5f;color:#fff;padding:14px;text-align:center;border-radius:6px;margin:16px 0}');
+    w.document.write('.total-box .label{font-size:10px;opacity:.8;letter-spacing:1px}');
+    w.document.write('.total-box .amount{font-size:22px;font-weight:bold;margin:4px 0}');
+    w.document.write('.total-box .sar{font-size:13px;opacity:.9}');
+    w.document.write('.footer{text-align:center;font-size:10px;color:#aaa;border-top:1px solid #eee;padding-top:10px;margin-top:10px}');
+    w.document.write('@media print{body{padding:15px}.no-print{display:none}}');
+    w.document.write('</style></head><body>');
+
+    w.document.write('<div class="header">');
+    w.document.write('<h1>UMRAH PACKAGE SLIP</h1>');
+    w.document.write('<p>Air Dubai &middot; KQ Software Solutions</p>');
+    w.document.write('</div>');
+
+    w.document.write('<table class="info-table">');
+    w.document.write('<tr><td>Package</td><td>' + ttl + '</td></tr>');
+    w.document.write('<tr><td>Customer</td><td>' + cust + '</td></tr>');
+    w.document.write('<tr><td>Phone</td><td>' + ph + '</td></tr>');
+    w.document.write('<tr><td>Travelers</td><td>' + d.tp + ' (' + d.a + ' Adult' + (d.a > 1 ? 's' : '') + ', ' + d.c + ' Child' + (d.c !== 1 ? 'ren' : '') + ', ' + d.i + ' Infant' + (d.i !== 1 ? 's' : '') + ')</td></tr>');
+    w.document.write('</table>');
+
+    // Flights
+    if (fId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Flights</div>');
+      for (var i = 1; i <= fId; i++) {
+        var de = $el('fd' + i);
+        if (de) w.document.write('<div class="section-item">' + (de.value || 'Flight #' + i) + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Visas
+    if (vId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Visas</div>');
+      for (var i = 1; i <= vId; i++) {
+        var de = $el('vd' + i);
+        if (de) w.document.write('<div class="section-item">' + (de.value || 'Visa #' + i) + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Transport
+    if (tId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Transport</div>');
+      for (var i = 1; i <= tId; i++) {
+        var fr = $el('td' + i), ty = $el('tt' + i);
+        if (fr) w.document.write('<div class="section-item">' + (fr.value || 'Transport #' + i) + (ty ? ' (' + ty.value + ')' : '') + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Hotels
+    if (hId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Hotels</div>');
+      for (var i = 1; i <= hId; i++) {
+        var nm = $el('hnm' + i), cy = $el('hc' + i), ni = $el('hn' + i);
+        if (nm) w.document.write('<div class="section-item">' + (nm.value || 'Hotel #' + i) + (cy ? ' - ' + cy.value : '') + (ni ? ' (' + ni.textContent + ' nights)' : '') + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Ziarat
+    if (zId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Ziarat Tours</div>');
+      for (var i = 1; i <= zId; i++) {
+        var de = $el('zd' + i);
+        if (de) w.document.write('<div class="section-item">' + (de.value || 'Ziarat #' + i) + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Extras
+    if (eId > 0) {
+      w.document.write('<div class="section"><div class="section-title">Extra Services</div>');
+      for (var i = 1; i <= eId; i++) {
+        var de = $el('ed' + i);
+        if (de) w.document.write('<div class="section-item">' + (de.value || 'Extra #' + i) + '</div>');
+      }
+      w.document.write('</div>');
+    }
+
+    // Per Person (divided from total)
+    var perPersonPKR = d.tp > 0 ? d.gt / d.tp : 0;
+    var perPersonSAR = d.tp > 0 ? d.gs / d.tp : 0;
+
+    w.document.write('<div class="total-box">');
+    w.document.write('<div class="label">GRAND TOTAL</div>');
+    w.document.write('<div class="amount">PKR ' + d.gt.toLocaleString() + '</div>');
+    w.document.write('<div class="sar">SAR ' + d.gs.toFixed(2) + '</div>');
+    w.document.write('</div>');
+
+    w.document.write('<div style="text-align:center;margin-bottom:14px;padding:10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0">');
+    w.document.write('<div style="font-size:11px;color:#64748b;font-weight:600;margin-bottom:4px">PER PERSON COST</div>');
+    w.document.write('<div style="font-size:17px;font-weight:bold;color:#1e293b">PKR ' + perPersonPKR.toFixed(0) + '</div>');
+    w.document.write('<div style="font-size:12px;color:#94a3b8">SAR ' + perPersonSAR.toFixed(2) + '</div>');
+    w.document.write('</div>');
+
+    w.document.write('<div class="footer">');
+    w.document.write('Generated by Air Dubai Umrah Calculator &middot; KQ Software Solutions');
+    w.document.write('</div>');
+
+    w.document.write('<div class="no-print" style="text-align:center;margin-top:16px">');
+    w.document.write('<button onclick="window.print()" style="padding:10px 30px;background:#1a3a5f;color:#fff;border:none;border-radius:6px;font-size:14px;cursor:pointer">Print</button>');
+    w.document.write(' <button onclick="window.close()" style="padding:10px 20px;background:#eee;color:#555;border:1px solid #ccc;border-radius:6px;font-size:14px;cursor:pointer">Close</button>');
+    w.document.write('</div>');
+
+    w.document.write('</body></html>');
+    w.document.close();
+  } catch (e) { alert('Print slip error: ' + e.message); }
 }
 
 // ===== INIT =====
